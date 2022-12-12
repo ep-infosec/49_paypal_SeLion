@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Page Objects Demo Application</string>
+    <string name="sampleText">PageObjects Demo</string>
+    <string name="sample_header">Sample</string>
+    <string name="tap_header">Tap</string>
+    <string name="touch_header">Touch</string>
+    <string name="tap_multi_tap">Multi Tap</string>
+    <string name="tap_single_tap">Single Tap</string>
+    <string name="state_header">State</string>
+    <string name="touch_btn_text">Two Finger Button</string>
+    <string name="table_header">Table</string>
+    <string name="picker_header">Picker</string>
+    <string name="picker_no_support">Android does not support Picker</string>
+    <string name="tap_long_tap">Long Tap</string>
+</resources>

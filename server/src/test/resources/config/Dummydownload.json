@@ -1,0 +1,26 @@
+[
+  {
+    "name": "selenium",
+    "roles": [ "hub", "node", "standalone" ],
+    "any": {
+      "url": "seleniumURL",
+      "checksum": "seleniumChecksum"
+    }
+  },
+  {
+    "name": "chrome",
+    "roles": [ "node", "standalone" ],
+    "windows": {
+      "url": "chromeURL",
+      "checksum": "chromeCheckSum"
+    },
+    "linux": {
+      "url": "chromeURL_linux",
+      "checksum": "chromeCheckSum_linux"
+    },
+    "mac": {
+      "url": "chromeURL_mac",
+      "checksum": "chromeCheckSum_mac"
+    }
+  }
+]

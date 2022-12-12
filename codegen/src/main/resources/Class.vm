@@ -1,0 +1,341 @@
+#if (!$package.equals(""))
+package $package;
+#end
+
+import $baseclasspackage;
+#foreach ($data in $control)
+import $data;
+#end
+
+public class $class extends $baseclass {
+
+#foreach ($member in $members)
+#if (!$member.parent.contains("Container"))
+#if ($member.memberType == "Container")
+    private $member.firstToUpperCase($member.memberName) $member.memberName;
+#else
+    private $member.memberType $member.memberName;
+#end
+#end
+#end
+
+
+     /**
+     * SeLion GUI Html Object Standard
+     *    
+     * The naming conventions followed in SeLion for html elements are as follows,
+     *
+     * <alias>{corresponding class name of the html element in SeLion} where - <alias> will be the object name with its 
+     * first letter in lowercase.
+     * 
+     * <alias>Button                For Button html element.
+     * <alias>CheckBox              For Check Box html element.
+     * <alias>DatePicker            For Date Picker html element.
+     * <alias>Form                  For Form html element.
+     * <alias>Image                 For Image html element.
+     * <alias>Label                 For Label html element.
+     * <alias>Link                  For Link html element.
+     * <alias>RadioButton           For Radio Button html element.
+     * <alias>List                  For Select List html element.
+     * <alias>Table                 For Table html element.
+     * <alias>TextField             For Text Field html element.
+     * <alias>Container             For Container html element.
+     * 
+     */
+     
+
+    private static String CLASS_NAME = "$class";
+    private static String PAGE_DOMAIN = "$domain";
+
+
+    /**
+     * Creates a new $class object
+     */
+    public $class() {
+        super.initPage(PAGE_DOMAIN, CLASS_NAME);
+    }
+    
+    /**
+     * Creates a new $class object
+     *
+     * @param siteLocale
+     *            The Country locale for the site you are accessing
+     */
+    public $class(String siteLocale) {
+        super.initPage(PAGE_DOMAIN, CLASS_NAME, siteLocale);
+    }
+
+    public $class getPage() {
+        return this;
+    }
+
+#foreach ($member in $members)
+#if (!$member.parent.endsWith("Container"))
+##initializing a variable to be used across all the custom methods for each AbstractElement
+#set ( $getterDetail = "get$member.firstToUpperCase($member.memberName)()" )
+
+#if (${member.memberType} == "Container")
+
+    /**
+     * Used to get the ${member.firstToUpperCase($member.memberName)}.
+     *
+     * @return ${member.memberName}
+     */
+    public ${member.firstToUpperCase($member.memberName)} get${member.firstToUpperCase(${member.memberName})}() {
+        ${member.firstToUpperCase($member.memberName)} element = this.$member.memberName;
+        if(element == null) {
+            this.$member.memberName = new ${member.firstToUpperCase($member.memberName)}(getObjectMap().get("$member.memberName"), 
+                    "$member.memberName", this,this.getObjectContainerMap().get("$member.memberName"));
+        }
+        return this.$member.memberName;
+    }
+
+    /**
+     * Used to get ${member.firstToUpperCase($member.memberName)} at specified index.
+     *
+     * @return ${member.memberName} at index
+     */
+    public ${member.firstToUpperCase($member.memberName)} get${member.firstToUpperCase($member.memberName)}(int index) {
+        ${getterDetail}.setIndex(index);
+        return ${member.memberName};
+    }
+#else
+
+    /**
+     * Used to get $member.memberName in the page $class
+     *
+     * @return $member.memberName
+     */
+    public $member.memberType get$member.firstToUpperCase($member.memberName)() {
+        $member.memberType element = this.$member.memberName;
+        if(element == null) {
+            this.$member.memberName = new ${member.memberType}(getObjectMap().get("$member.memberName"), "$member.memberName",
+                    this);
+        }
+        return this.$member.memberName;
+    }
+#end
+
+#if ($member.memberType == "TextField")
+    /**
+     * Used to set the value of $member.memberName in the page $class.
+     */
+    public void set${member.firstToUpperCase($member.memberName)}Value(String ${member.returnArg($member.memberName)}) {
+        ${getterDetail}.type(${member.returnArg($member.memberName)});
+    }
+    
+    /**
+     * Used to get the value of $member.memberName in the page $class.
+     *
+     * @return text in $member.memberName
+     */
+    public String get${member.firstToUpperCase($member.memberName)}Value() {
+        return ${getterDetail}.getText();
+    }
+
+#elseif ($member.memberType == "CheckBox")
+    /**
+     * Used to check the control $member.memberName in the page $class
+     */
+    public void check${member.firstToUpperCase($member.memberName)}() {
+       ${getterDetail}.check();
+    }
+
+    /**
+     * Used to uncheck the control $member.memberName in the page $class
+     */
+    public void uncheck${member.firstToUpperCase($member.memberName)}() {
+        ${getterDetail}.uncheck();
+    }
+
+    /**
+     * Used to click the control $member.memberName in the page $class
+     */
+    public void click${member.firstToUpperCase($member.memberName)}() {
+        ${getterDetail}.click();
+    }
+
+#elseif ($member.memberType == "Label")
+    /**
+     * Used to check for the specific text available in the control $member.memberName
+     */
+    public boolean isTextPresentFor${member.firstToUpperCase($member.memberName)}(String pattern) {
+        return ${getterDetail}.isTextPresent(pattern);
+    }
+
+#elseif ($member.memberType == "Link")
+    /**
+     * Used to check the control $member.memberName in the page $class and wait for the object to load.
+     */
+    public void click${member.firstToUpperCase($member.memberName)}(Object... expected) {
+        ${getterDetail}.click(expected);
+    }
+
+    /**
+     * Used to click $member.memberName in the page $class
+     */
+    public void click${member.firstToUpperCase($member.memberName)}() {
+        ${getterDetail}.click();
+    }
+
+#elseif ($member.memberType == "RadioButton")
+    /**
+     * Used to check the control $member.memberName in the page $class
+     */
+    public void check${member.firstToUpperCase($member.memberName)}() {
+        ${getterDetail}.check();
+    }
+
+    /**
+     * Used to click the control $member.memberName in the page $class
+     */
+    public void click${member.firstToUpperCase($member.memberName)}() {
+        ${getterDetail}.click();
+    }
+
+#elseif ($member.memberType == "Button")
+    /**
+     * Used to click $member.memberName in the page $class and check that resulting page contains expected item.
+     */
+    public void click${member.firstToUpperCase($member.memberName)}(Object... expected) {
+        ${getterDetail}.click(expected);
+    }
+
+    /**
+     * Used to click $member.memberName in the page $class
+     */
+    public void click${member.firstToUpperCase($member.memberName)}() {
+        ${getterDetail}.click();
+    }
+
+    /**
+     * Used to get the value of $member.memberName in the page $class.
+     *
+     * @return text in $member.memberName
+     */
+    public String get${member.firstToUpperCase($member.memberName)}Value() {
+        return ${getterDetail}.getText();
+    }
+
+#elseif ($member.memberType == "SelectList")
+    /**
+     * Used to select element in the control $member.memberName based on the value.
+     */
+    public void select${member.firstToUpperCase($member.memberName)}ByValue(String value) {
+        ${getterDetail}.selectByValue(value);
+    }
+
+    /**
+     * Used to select element in the control $member.memberName based on the label.
+     */
+    public void select${member.firstToUpperCase($member.memberName)}ByLabel(String label) {
+        ${getterDetail}.selectByLabel(label);
+    }
+
+    /**
+     * Used to select element in the control $member.memberName based on the index
+     */
+    public void select${member.firstToUpperCase($member.memberName)}ByIndex(int index) {
+        ${getterDetail}.selectByIndex(index);
+    }
+#end
+#end
+#end
+#set ($containers = []) 
+#foreach ( $member in $members )
+#if ($member.memberType == "Container")
+#set ($success = $containers.add($member.memberName))
+#end
+#end
+#foreach ($containerName in $containers)
+#set ($containerClass = ${members.get(0).firstToUpperCase($containerName)})
+    public class $containerClass extends Container {
+    
+#foreach ($member in $members)
+#if ($member.parent == $containerName)
+        private $member.memberType $member.memberName;
+#end
+#end
+
+        /**
+         * $containerClass Construction method <br>
+         * <br>
+         * <b>Usage:</b>
+         * 
+         * <pre>
+         * private $class pageInstance = new $class();
+         * private $class.$containerClass $containerName = pageInstance.new $containerClass(&quot;//span[@id='containerLocator']&quot;);
+         * </pre>
+         * 
+         * @param locator
+         *            the element locator
+         */
+        public $containerClass(String locator) {
+            super(locator);
+        }
+
+        /**
+         * Use this constructor to override default controlName for logging purposes. Default controlName would be the
+         * element locator.
+         * 
+         * @param locator
+          *            the element locator
+          * @param controlName
+         *            the control name used for logging
+         */
+        public $containerClass(String locator, String controlName) {
+            super(locator, controlName);
+        }
+        
+        /**
+         * Use this constructor to override default controlName and assign a parent
+         * 
+         * @param locator
+         *            - A String that represents the means to locate this element (could be id/name/xpath/css locator).
+         * @param controlName
+         *            - the control name used for logging.
+         * @param parent
+         *            - A {@link ParentTraits} object that represents the parent element for this element.
+         * 
+         */
+        public $containerClass(String locator, String controlName,ParentTraits parent) {
+            super(locator, controlName, parent);
+        }
+        
+        public $containerClass(String locator, String controlName, ParentTraits parent, 
+                 java.util.Map<String,String> containerElements) {
+            super(locator, controlName, parent, containerElements);
+        }
+
+        private $containerClass getContainer() {
+            if (!isInitialized()) {
+                getObjectMap();
+                ##initializeHtmlObjects(this, ${class}.this.objectMap);
+            }
+            return this;
+        }
+#foreach ($member in $members) 
+#if ($member.parent == $containerName)
+
+        /**
+         * For $containerClass $member.memberType : $member.memberName 
+         *
+         * Used to get $member.memberName in $containerName
+         *
+         * @return $member.memberName
+         */
+        public $member.memberType get${member.firstToUpperCase($member.memberName)}() {
+            $member.memberType containerElement = getContainer().$member.memberName;
+            if(containerElement == null) {
+                getContainer().$member.memberName = new ${member.memberType}(this.containerElements.get("$member.memberName"), 
+                    "$member.memberName", this);
+            }
+            return getContainer().$member.memberName;
+        }
+#end
+#end
+
+    }
+#end
+}
+

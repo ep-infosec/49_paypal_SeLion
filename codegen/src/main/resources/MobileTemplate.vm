@@ -1,0 +1,57 @@
+#if (!$package.equals(""))
+package $package;
+#end
+
+import $baseclasspackage;
+#foreach ($data in $control)
+import $data;
+#end
+
+public class $class extends $baseclass {
+
+#foreach ($member in $members)
+    private $member.memberType $member.memberName;
+#end
+
+    private static String CLASS_NAME = "$class";
+    private static String PAGE_DOMAIN = "$domain";
+
+
+    /**
+     * Creates a new $class object
+     */
+    public $class() {
+        super.initPage(PAGE_DOMAIN, CLASS_NAME);
+    }
+    
+    /**
+     * Creates a new $class object
+     
+     * @param siteLocale
+     *        The Country locale for the site you are accessing
+     */
+    public $class(String siteLocale) {
+        super.initPage(PAGE_DOMAIN, CLASS_NAME, siteLocale);
+    }
+
+    public $class getPage() {
+        return this;
+    }
+
+#foreach ($member in $members)
+
+    /**
+     * Used to get $member.memberName in the page $class
+     *
+     * @return $member.memberName
+     */
+    public $member.memberType get$member.firstToUpperCase($member.memberName)() {
+        $member.memberType element = this.$member.memberName;
+        if(element == null) {
+            this.$member.memberName = new ${member.memberType}(getObjectMap().get("$member.memberName"));
+        }
+        return this.$member.memberName;
+    }
+
+#end
+}
